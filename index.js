@@ -100,7 +100,14 @@ handlers.notFound = function (data, callback) {
 
 }
 
+handlers.home = function(data,callback){
+    callback(200,{
+        'Welcome': 'Monit App'
+    })
+}
+
 var router = {
+    '': handlers.home,
     'test': handlers.sample,
     'notFound': handlers.notFound
 }
