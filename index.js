@@ -46,16 +46,59 @@ var server = http.createServer(function (req, res) {
     req.on('end', function () {
         buffer += decoder.end();
 
-        console.log('Request Body received in request(buffer) - ', buffer);
 
-        res.end(`Request was received with payload - ${buffer}`);
+        // router handler
+        var routeHandler = typeof (router[trimmedPath]) === 'undefined' ? router['notFound'] : router[trimmedPath];
+
+        var data = {
+            'method': httpMethod,
+            'path': trimmedPath,
+            'queryString': queryString,
+            'headers': headers,
+            'payload': buffer
+        }
+
+        routeHandler(data, function (statusCode, payload) {
+            // use the status code defined by the hanler or default to 200
+            statusCode = typeof (statusCode) == 'number' ? statusCode : 200;
+
+            // if there is no payload coming from handler, default to empty object
+            payload = typeof (payload) == 'object' ? payload : {};
+
+            // convert the payload to a string
+            payload = JSON.stringify(payload);
+
+            // return the response
+            res.writeHead(statusCode);
+            res.end(payload);
+
+            console.log(`Response - ${statusCode} - ${payload}`);
+        });
     });
-
-    
-
 });
 
 // start the server, have it listen on port 3000
 server.listen(5000, function () {
     console.log('Listening at port 5000');
 });
+
+var handlers = {};
+
+handlers.test = function (data, callback) {
+
+    callback(200, {
+        'firstName': 'vimal',
+        'lastName': 'munjani'
+    });
+}
+
+handlers.notFound = function (data, callback) {
+
+    callback(404, {});
+
+}
+
+var router = {
+    'test': handlers.sample,
+    'notFound': handlers.notFound
+}
