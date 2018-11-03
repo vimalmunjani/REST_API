@@ -1,0 +1,21 @@
+{
+  "name": "REST_API",
+  "version": "1.0.0",
+  "description": "# uptime monitoring API",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vimalmunjani/REST_API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/vimalmunjani/REST_API/issues"
+  },
+  "homepage": "https://github.com/vimalmunjani/REST_API#readme"
+}
